@@ -1,0 +1,244 @@
+<%= link_to "Back to Product List", products_path, class: "btn btn-secondary-back" %>
+
+<div class="product-details">
+  <h1>Product Details</h1>
+  <table class="table">
+    <tr>
+      <th>Name</th>
+      <td><%= @product.name %></td>
+    </tr>
+    <tr>
+      <th>Description</th>
+      <td><%= @product.description %></td>
+    </tr>
+    <tr>
+      <th>Price</th>
+      <td><%= number_to_currency(@product.price) %></td>
+    </tr>
+    <tr>
+      <th>Sales</th>
+      <td><%= @product.sales %></td>
+    </tr>
+    <tr>
+      <th>Image</th>
+      <td><%= image_tag @product.image_path, width: 300, height: 200 %></td>
+      <%# image_tag , width: 300, height: 200%>
+    </tr>
+    <tr>
+      <th>Product Type</th>
+      <td><%= @product.product_type %></td>
+    </tr>
+    <tr>
+      <th>Color</th>
+      <td><%= @product.color %></td>
+    </tr>
+  </table>
+
+  <%# 顾客方法 #%>
+  <% if current_user.role == 'buyer' %>
+    <div class="action-form">
+      <%= form_with(model: @cart_item, url: cart_items_path, method: :post) do |form| %>
+        <%= form.hidden_field :product_id, value: @product.id %>
+        <div class="quantity-input">
+          <%= form.label :quantity %>
+          <%= form.number_field :quantity, min: 1 %>
+          <%= form.submit "Add to My Cart", class: "btn btn-success-addcart" %>
+        </div>
+      <% end %>
+
+      <%= form_with(model: @favorite, url: favorites_path(product_id: @product.id), method: :post) do |form| %>
+        <%= form.submit "Favor this Product", class: "btn btn-primary-addfavor" %>
+      <% end %>
+
+      <%= link_to "Add Comment", new_product_comment_path(@product), class: "btn btn-primary-addcomment", method: :get%>
+
+    </div>
+  <% end %>
+</div>
+
+<%# 评论列表 #%>
+<% if @product.comments.any? %>
+  <h2>Comments</h2>
+  <ul class="comments-list">
+    <% @product.comments.each do |comment| %>
+      <li class="comment-card">
+        <strong><%= comment.user.email %>:</strong> <%= comment.content %>
+        <% if comment.user == current_user %>
+          <%= link_to "Delete", product_comment_path(@product, comment), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: "btn btn-primary-deletecomment" %>
+        <% end %>
+
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No comments yet.</p>
+<% end %>
+
+
+<style>
+  .comments-list {
+    list-style-type: none;
+    padding: 0;
+    word-wrap: break-word; /* 允许长单词或 URL 换行 */
+    white-space: pre-line; /* 保留空白和换行符，并在必要时进行换行 */
+  }
+
+  .comment-card {
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 5px; /* 调整卡片的内边距 */
+    background-color: #f9f9f9;
+    width: 70%;
+  }
+
+  .comment-card strong {
+    color: #007bff;
+  }
+
+  .btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #007bff;
+    border: 1px solid #007bff;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    text-decoration: none;
+    margin-right: 10px;
+  }
+
+  .btn:hover {
+    color: #fff;
+    background-color: #0056b3;
+    border-color: #0056b3;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+
+  .btn-primary-addfavor {
+    color: #fff;
+    background-color:  #ffc107; /* 浅黄色 */
+    border-color: #ffc107; /* 浅黄色 */
+    background-image: url(https://argithun-blog-1321510384.cos.ap-beijing.myqcloud.com/icons/ic_addfavor.png); /* 替换为你的图标路径 */
+    background-repeat: no-repeat;
+    background-size: 20px 20px; /* 设置图标大小，单位可以是像素或百分比 */
+    background-position: left center; /* 图标居左显示 */
+    padding-left: 35px; /* 调整左内边距以容纳图标 */
+    padding-right: 20px; /* 调整右内边距 */
+    border-width: 1px 10px; /* 分别指定垂直和水平方向的边框宽度 */
+    border-style: solid; /* 边框样式为实线 */
+  }
+
+  .btn-primary-addcomment {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    background-image: url(https://argithun-blog-1321510384.cos.ap-beijing.myqcloud.com/icons/ic_addcomment.png); /* 替换为你的图标路径 */
+    background-repeat: no-repeat;
+    background-size: 20px 20px; /* 设置图标大小，单位可以是像素或百分比 */
+    background-position: left center; /* 图标居左显示 */
+    padding-left: 35px; /* 调整左内边距以容纳图标 */
+    padding-right: 20px; /* 调整右内边距 */
+    border-width: 1px 10px; /* 分别指定垂直和水平方向的边框宽度 */
+    border-style: solid; /* 边框样式为实线 */
+  }
+
+  .btn-primary-deletecomment {
+    color: #fff;
+    background-color: red;
+    border-color: red;
+    background-image: url(https://argithun-blog-1321510384.cos.ap-beijing.myqcloud.com/icons/ic_deletecomment.png); /* 替换为你的图标路径 */
+    background-repeat: no-repeat;
+    background-size: 20px 20px; /* 设置图标大小，单位可以是像素或百分比 */
+    background-position: left center; /* 图标居左显示 */
+    padding-left: 35px; /* 调整左内边距以容纳图标 */
+    padding-right: 20px; /* 调整右内边距 */
+    border-width: 1px 10px; /* 分别指定垂直和水平方向的边框宽度 */
+    border-style: solid; /* 边框样式为实线 */
+    float: right; /* 将按钮浮动到右侧 */
+  }
+
+
+  .btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+  }
+
+  .btn-secondary-back {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+    background-image: url(https://argithun-blog-1321510384.cos.ap-beijing.myqcloud.com/icons/ic_back.png); /* 替换为你的图标路径 */
+    background-repeat: no-repeat;
+    background-size: 20px 20px; /* 设置图标大小，单位可以是像素或百分比 */
+    background-position: left center; /* 图标居左显示 */
+    padding-left: 35px; /* 调整左内边距以容纳图标 */
+    padding-right: 20px; /* 调整右内边距 */
+    border-width: 1px 10px; /* 分别指定垂直和水平方向的边框宽度 */
+    border-style: solid; /* 边框样式为实线 */
+  }
+
+  .btn-success {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+  }
+
+  .btn-success-addcart {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+    background-image: url(https://argithun-blog-1321510384.cos.ap-beijing.myqcloud.com/icons/ic_addcart.png); /* 替换为你的图标路径 */
+    background-repeat: no-repeat;
+    background-size: 20px 20px; /* 设置图标大小，单位可以是像素或百分比 */
+    background-position: left center; /* 图标居左显示 */
+    padding-left: 35px; /* 调整左内边距以容纳图标 */
+    padding-right: 20px; /* 调整右内边距 */
+    border-width: 1px 10px; /* 分别指定垂直和水平方向的边框宽度 */
+    border-style: solid; /* 边框样式为实线 */
+  }
+
+  .product-details {
+    margin-top: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+
+  th, td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  .action-form {
+    display: flex;
+    margin-top: 10px;
+  }
+
+  .quantity-input {
+    margin-right: 10px;
+  }
+</style>

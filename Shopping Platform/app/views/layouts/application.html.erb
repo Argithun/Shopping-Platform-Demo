@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Just Buy It</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+
+    <style>
+      body {
+        background-image: url('https://argithun-blog-1321510384.cos.ap-beijing.myqcloud.com/icons/cover1.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+    </style>
+    
+  </head>
+
+  <body>
+    <% if user_signed_in? %>
+      <li><%= link_to "Sign out", destroy_user_session_path, method: :get %></li>
+      <div> <br/> </div>
+    <% end %>
+
+    <%= yield %>
+  </body>
+</html>

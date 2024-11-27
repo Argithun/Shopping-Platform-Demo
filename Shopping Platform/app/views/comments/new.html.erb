@@ -1,0 +1,152 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap">
+
+<!-- app/views/comments/new.html.erb -->
+<%= link_to "Back to Product Details", product_path(@product), class: "btn btn-secondary-back" %>
+
+<h1>Comment for this product</h1>
+
+<%= form_with(model: [@product, @comment], url: product_comments_path(@product), method: :post) do |form| %>
+  <div class="field">
+    <%= form.text_area :content, cols: 120, rows: 18 %>
+  </div>
+
+  <%= form.submit "Create Comment", class: "btn btn-primary-submit" %>
+<% end %>
+
+
+<style>
+  .field textarea {
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  .btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #007bff;
+    border: 1px solid #007bff;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    text-decoration: none;
+    margin-right: 10px;
+  }
+
+  .btn:hover {
+    color: #fff;
+    background-color: #0056b3;
+    border-color: #0056b3;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+
+  .btn-primary-addfavor {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    background-image: url(https://argithun-blog-1321510384.cos.ap-beijing.myqcloud.com/icons/ic_addfavor.png); /* 替换为你的图标路径 */
+    background-repeat: no-repeat;
+    background-size: 20px 20px; /* 设置图标大小，单位可以是像素或百分比 */
+    background-position: left center; /* 图标居左显示 */
+    padding-left: 35px; /* 调整左内边距以容纳图标 */
+    padding-right: 20px; /* 调整右内边距 */
+    border-width: 1px 10px; /* 分别指定垂直和水平方向的边框宽度 */
+    border-style: solid; /* 边框样式为实线 */
+  }
+
+  .btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+  }
+
+  .btn-secondary-back {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+    background-image: url(https://argithun-blog-1321510384.cos.ap-beijing.myqcloud.com/icons/ic_back.png); /* 替换为你的图标路径 */
+    background-repeat: no-repeat;
+    background-size: 20px 20px; /* 设置图标大小，单位可以是像素或百分比 */
+    background-position: left center; /* 图标居左显示 */
+    padding-left: 35px; /* 调整左内边距以容纳图标 */
+    padding-right: 20px; /* 调整右内边距 */
+    border-width: 1px 10px; /* 分别指定垂直和水平方向的边框宽度 */
+    border-style: solid; /* 边框样式为实线 */
+  }
+
+  .btn-primary-submit {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    background-image: url(https://argithun-blog-1321510384.cos.ap-beijing.myqcloud.com/icons/ic_addcomment.png); /* 替换为你的图标路径 */
+    background-repeat: no-repeat;
+    background-size: 20px 20px; /* 设置图标大小，单位可以是像素或百分比 */
+    background-position: left center; /* 图标居左显示 */
+    padding-left: 35px; /* 调整左内边距以容纳图标 */
+    padding-right: 20px; /* 调整右内边距 */
+    border-width: 1px 10px; /* 分别指定垂直和水平方向的边框宽度 */
+    border-style: solid; /* 边框样式为实线 */
+  }
+
+  .btn-success {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+  }
+
+  .btn-success-addcart {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+    background-image: url(https://argithun-blog-1321510384.cos.ap-beijing.myqcloud.com/icons/ic_addcart.png); /* 替换为你的图标路径 */
+    background-repeat: no-repeat;
+    background-size: 20px 20px; /* 设置图标大小，单位可以是像素或百分比 */
+    background-position: left center; /* 图标居左显示 */
+    padding-left: 35px; /* 调整左内边距以容纳图标 */
+    padding-right: 20px; /* 调整右内边距 */
+    border-width: 1px 10px; /* 分别指定垂直和水平方向的边框宽度 */
+    border-style: solid; /* 边框样式为实线 */
+  }
+
+  .product-details {
+    margin-top: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+
+  th, td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  .action-form {
+    display: flex;
+    margin-top: 10px;
+  }
+
+  .quantity-input {
+    margin-right: 10px;
+  }
+</style>

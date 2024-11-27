@@ -1,0 +1,15 @@
+<h2>Edit Comment</h2>
+
+<%= form_with(model: @comment, url: product_comment_path(@product, @comment), method: :patch) do |form| %>
+  <%= render 'shared/error_messages', resource: @comment %>
+
+  <div class="field">
+    <%= form.label :content %><br>
+    <%= form.text_area :content, rows: 4 %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Update Comment", class: "btn btn-primary" %>
+  </div>
+<% end %>
+

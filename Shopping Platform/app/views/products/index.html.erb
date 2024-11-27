@@ -1,0 +1,205 @@
+<%= turbo_stream_from favorites_path %>
+
+<div>
+  Have a nice day, <%= current_user.email%>!
+</div>
+<div>
+  <br/>
+</div>
+<div class="user-links">
+  <% if current_user.role == 'buyer' %>
+    <%= link_to "My Favorites", favorites_path, class: "btn btn-primary-favorites" %>
+    <%= link_to "My Cart", cart_items_path, class: "btn btn-primary-cart" %>
+    <%= link_to "My Order", order_items_path, class: "btn btn-primary-order" %>
+  <% elsif current_user.role == 'admin' %>
+    <%= link_to "All Orders", order_items_path, class: "btn btn-primary-allO" %>
+  <% end %>
+</div>
+
+<h1>Product List</h1>
+
+<table class="sys_table">
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @products.each do |product| %>
+      <tr>
+        <td><%= image_tag product.image_path, width: 150, height: 100 %></td>
+        <%# image_tag , width: 150, height: 100%>
+        <td><%= product.name %></td>
+        <td><%= number_to_currency(product.price) %></td>
+        <td>
+          <%# 通用方法 %>
+          <%= link_to "View", product_path(product), class: "btn btn-info" %>
+          
+          <%# 管理员方法 %>
+          <% if current_user.role == 'admin' %>
+            <%= link_to "Edit", edit_product_path(product), class: "btn btn-secondary" %>
+            <%= link_to "Delete", product, data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' },  class: "btn btn-danger" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% if current_user.role == 'admin' %>
+  <div> <br/> </div>
+  <%= link_to "Add Product", new_product_path, class: "btn btn-primary-add" %>
+<% end %>
+
+<style>
+  .user-links {
+    margin-bottom: 20px;
+  }
+
+  .sys_table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  .sys_table th, .sys_table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .sys_table th {
+    background-color: #f2f2f2;
+  }
+
+  .action-link {
+    margin-right: 10px;
+    text-decoration: none;
+    color: #007bff;
+  }
+
+  .btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #007bff;
+    border: 1px solid #007bff;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    text-decoration: none;
+    margin-right: 10px;
+  }
+
+  .btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+
+  .btn-primary-add {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    background-image: url(https://argithun-blog-1321510384.cos.ap-beijing.myqcloud.com/icons/ic_addproduct.png); /* 替换为你的图标路径 */
+    background-repeat: no-repeat;
+    background-size: 20px 20px; /* 设置图标大小，单位可以是像素或百分比 */
+    background-position: left center; /* 图标居左显示 */
+    padding-left: 35px; /* 调整左内边距以容纳图标 */
+    padding-right: 20px; /* 调整右内边距 */
+    border-width: 1px 10px; /* 分别指定垂直和水平方向的边框宽度 */
+    border-style: solid; /* 边框样式为实线 */
+  }
+
+  .btn-primary-allO {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    background-image: url(https://argithun-blog-1321510384.cos.ap-beijing.myqcloud.com/icons/ic_allorders.png); /* 替换为你的图标路径 */
+    background-repeat: no-repeat;
+    background-size: 20px 20px; /* 设置图标大小，单位可以是像素或百分比 */
+    background-position: left center; /* 图标居左显示 */
+    padding-left: 35px; /* 调整左内边距以容纳图标 */
+    padding-right: 20px; /* 调整右内边距 */
+    border-width: 1px 10px; /* 分别指定垂直和水平方向的边框宽度 */
+    border-style: solid; /* 边框样式为实线 */
+  }
+
+  .btn-primary-favorites {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    background-image: url(https://argithun-blog-1321510384.cos.ap-beijing.myqcloud.com/icons/ic_favorites.png); /* 替换为你的图标路径 */
+    background-repeat: no-repeat;
+    background-size: 20px 20px; /* 设置图标大小，单位可以是像素或百分比 */
+    background-position: left center; /* 图标居左显示 */
+    padding-left: 35px; /* 调整左内边距以容纳图标 */
+    padding-right: 20px; /* 调整右内边距 */
+    border-width: 1px 10px; /* 分别指定垂直和水平方向的边框宽度 */
+    border-style: solid; /* 边框样式为实线 */
+  }
+
+  .btn-primary-cart {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    background-image: url(https://argithun-blog-1321510384.cos.ap-beijing.myqcloud.com/icons/ic_cart.png); /* 替换为你的图标路径 */
+    background-repeat: no-repeat;
+    background-size: 20px 20px; /* 设置图标大小，单位可以是像素或百分比 */
+    background-position: left center; /* 图标居左显示 */
+    padding-left: 35px; /* 调整左内边距以容纳图标 */
+    padding-right: 20px; /* 调整右内边距 */
+    border-width: 1px 10px; /* 分别指定垂直和水平方向的边框宽度 */
+    border-style: solid; /* 边框样式为实线 */
+  }
+
+  .btn-primary-order {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    background-image: url(https://argithun-blog-1321510384.cos.ap-beijing.myqcloud.com/icons/ic_order.png); /* 替换为你的图标路径 */
+    background-repeat: no-repeat;
+    background-size: 20px 20px; /* 设置图标大小，单位可以是像素或百分比 */
+    background-position: left center; /* 图标居左显示 */
+    padding-left: 35px; /* 调整左内边距以容纳图标 */
+    padding-right: 20px; /* 调整右内边距 */
+    border-width: 1px 10px; /* 分别指定垂直和水平方向的边框宽度 */
+    border-style: solid; /* 边框样式为实线 */
+  }
+
+  .btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+  }
+
+  .btn-danger {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+
+  .btn:hover {
+    color: #fff;
+    background-color: #0056b3;
+    border-color: #0056b3;
+    text-decoration: none;
+  }
+
+  .btn-info {
+    color: #fff;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+  }
+</style>
